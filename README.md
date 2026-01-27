@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Full-Stack Web App
 
 A simple full-stack web application built with Node.js, Express, MongoDB, and vanilla HTML/CSS/JavaScript.
@@ -74,3 +75,6 @@ The application will be available at:
 - The server will start even if MongoDB is not connected, but database operations will fail
 - Make sure MongoDB is running before testing database functionality
 - For production, update the MongoDB connection string and add proper error handling
+=======
+# women_safetyroadmap_vijayawada
+>>>>>>> 207129ffb4d03328cdbd2f9aa8373e5da184f0e2
