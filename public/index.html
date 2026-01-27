@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Road Safety Review Map</title>
+  <!-- MapLibre GL JS CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Full-screen Map -->
+  <div id="map"></div>
+  
+  <!-- Color Legend Box -->
+  <div id="legend-box" class="legend-box">
+    <div class="legend-header">Road Safety Rating</div>
+    <div class="legend-item">
+      <div class="legend-color" style="background-color: #10b981;"></div>
+      <span>5 Stars - Very Safe</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background-color: #f59e0b;"></div>
+      <span>2-4 Stars - Moderate</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background-color: #ef4444;"></div>
+      <span>1 Star - Unsafe</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background-color: #3b82f6;"></div>
+      <span>No Rating</span>
+    </div>
+  </div>
+
+  <!-- MapLibre GL JS Library -->
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
