@@ -352,8 +352,8 @@ function getSegmentColor(avgRating) {
 function getRoadColor(avgRating) {
     if (!avgRating || avgRating === 0) return '#3b82f6'; // Blue (unrated)
     if (avgRating >= 5.0) return '#10b981'; // Green (safe) - rating >= 5
-    if (avgRating >= 1.0) return '#f59e0b'; // Orange (moderate) - rating >= 1 and < 5
-    return '#ef4444'; // Red (unsafe) - rating < 1
+    if (avgRating >= 2.0) return '#f59e0b'; // Orange (moderate) - rating >= 2 and < 5
+    return '#ef4444'; // Red (unsafe) - rating < 2
 }
 
 // Render stars for display
@@ -710,8 +710,8 @@ map.on('load', async () => {
                     'case',
                     ['==', ['get', 'avgRating'], 0], '#3b82f6', // Blue (unrated)
                     ['>=', ['get', 'avgRating'], 5], '#10b981', // Green (safe) - rating >= 5
-                    ['>=', ['get', 'avgRating'], 1], '#f59e0b', // Orange (moderate) - rating >= 1 and < 5
-                    '#ef4444' // Red (unsafe) - rating < 1
+                    ['>=', ['get', 'avgRating'], 2], '#f59e0b', // Orange (moderate) - rating >= 2 and < 5
+                    '#ef4444' // Red (unsafe) - rating < 2
                 ],
                 'line-width': 4,
                 'line-opacity': 0.7
