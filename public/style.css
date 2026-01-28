@@ -21,6 +21,33 @@ body {
   left: 0;
 }
 
+/* ===== TITLE OVERLAY ===== */
+.title-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  pointer-events: none;
+  /* Let clicks pass through if needed, but usually we want it to be selectable or at least not block map interactions underneath unnecessarily, though it's a small box */
+  pointer-events: auto;
+}
+
+.title-overlay::before {
+  content: '🛡️';
+  font-size: 24px;
+}
+
 /* ===== COLOR LEGEND BOX ===== */
 .legend-box {
   position: absolute;
@@ -63,6 +90,43 @@ body {
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
+}
+
+/* ===== SAFETY ALERT BANNER ===== */
+.safety-alert-banner {
+  background: #fef2f2;
+  border: 1px solid #ef4444;
+  color: #b91c1c;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.safety-alert-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .legend-item span {
@@ -445,24 +509,56 @@ body {
   #segment-action-panel {
     min-width: 90%;
   }
-  
+
   .legend-box {
     bottom: 15px;
     left: 10px;
     padding: 12px;
     min-width: 180px;
   }
-  
+
   .legend-header {
     font-size: 12px;
   }
-  
+
   .legend-item {
     font-size: 11px;
   }
-  
-  .legend-color {
-    width: 20px;
-    height: 20px;
-  }
+}
+
+/* ===== RECENT ALERTS LIST ===== */
+.recent-alerts {
+  margin-top: 15px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 10px;
+}
+
+.recent-alerts h4 {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.alert-item {
+  background: #fff;
+  border-left: 3px solid #ef4444;
+  padding: 8px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+.alert-time {
+  color: #6b7280;
+  font-size: 10px;
+  font-weight: normal;
 }

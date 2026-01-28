@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Item = require('../models/Item');
 const RoadRating = require('../models/RoadRating');
+const RoadAlert = require('../models/RoadAlert');
 
 // Health check endpoint
 router.get('/health', (req, res) => {
@@ -168,6 +169,71 @@ router.post('/road-ratings', async (req, res) => {
         res.status(500).json({
             success: false,
             error: 'Failed to save rating',
+            message: error.message
+        });
+    }
+});
+
+// ... existing imports ...
+
+// ... existing routes ...
+
+// ===== ROAD ALERT ENDPOINTS =====
+
+// Get recent alerts for a specific road (last 24-48 hours usually, but we'll fetch last 10)
+router.get('/road-alerts/:roadId', async (req, res) => {
+    try {
+        const { roadId } = req.params;
+        // Fetch last 5 alerts for this road
+        const alerts = await RoadAlert.find({ roadId })
+            .sort({ timestamp: -1 })
+            .limit(5);
+
+        res.json({
+            success: true,
+            data: alerts
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch alerts',
+            message: error.message
+        });
+    }
+});
+
+// Create a new road alert
+router.post('/road-alerts', async (req, res) => {
+    try {
+        const { roadId, alertType, description } = req.body;
+
+        if (!roadId || !alertType || !description) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required fields'
+            });
+        }
+
+        const userIp = req.ip || req.connection.remoteAddress;
+
+        const newAlert = new RoadAlert({
+            roadId,
+            alertType,
+            description,
+            userIp
+        });
+
+        const savedAlert = await newAlert.save();
+
+        res.status(201).json({
+            success: true,
+            data: savedAlert,
+            message: 'Alert reported successfully'
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to report alert',
             message: error.message
         });
     }

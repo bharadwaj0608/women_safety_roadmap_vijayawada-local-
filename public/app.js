@@ -38,6 +38,17 @@ map.addControl(new maplibregl.NavigationControl(), 'top-right');
 // Add fullscreen control
 map.addControl(new maplibregl.FullscreenControl(), 'top-right');
 
+// Add geolocate control to the map.
+map.addControl(
+    new maplibregl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true
+    }),
+    'top-right'
+);
+
 // ===== ROAD DATA MANAGEMENT =====
 
 // State for selected road
@@ -725,6 +736,12 @@ map.on('load', async () => {
 
 // Show road selection popup
 function showRoadSelectionPopup(roadId, roadName, coordinates) {
+    // Remove existing popup if any
+    const existingPopup = document.querySelector('.road-selection-popup');
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+
     // Get rating data for this road
     const aggregates = getRoadAggregates(roadId);
     const avgRating = aggregates ? aggregates.averageRating : 0;
@@ -758,9 +775,28 @@ function showRoadSelectionPopup(roadId, roadName, coordinates) {
             <div class="popup-row">
                 <strong>Reviews:</strong> ${totalReviews}
             </div>
+            ${avgRating > 0 && avgRating < 3.0 ? `
+            <div class="safety-alert-banner">
+                <span class="safety-alert-icon">⚠️</span>
+                <span><strong>Caution:</strong> This road has a low safety rating. Please be careful if travelling alone or at night.</span>
+            </div>
+            ` : ''}
+
+            <div id="popup-alerts-container">
+                <div style="font-size:12px; color:#666; margin-top:10px;">Loading alerts...</div>
+            </div>
+
             <button class="review-btn" onclick="openRoadReviewModal('${roadId}', '${roadName.replace(/'/g, "\\'")}')"
                 style="width: 100%; padding: 10px; margin-top: 10px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">
                 ⭐ Rate this Road
+            </button>
+            <button class="review-btn" onclick="openRoadAlertModal('${roadId}')"
+                style="width: 100%; padding: 10px; margin-top: 5px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                ⚠️ Report Alert
+            </button>
+            <button class="review-btn" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${coordinates[0][1]},${coordinates[0][0]}', '_blank')"
+                style="width: 100%; padding: 10px; margin-top: 5px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                🗺️ Get Directions
             </button>
         </div>
     `;
@@ -777,6 +813,7 @@ function showRoadSelectionPopup(roadId, roadName, coordinates) {
         z-index: 10000;
         animation: slideIn 0.3s ease;
         min-width: 280px;
+        width: 320px;
         overflow: hidden;
     `;
 
@@ -820,10 +857,8 @@ function showRoadSelectionPopup(roadId, roadName, coordinates) {
 
     document.body.appendChild(popup);
 
-    setTimeout(() => {
-        popup.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => popup.remove(), 300);
-    }, 5000);
+    // Fetch and display alerts (no timeout)
+    fetchRecentAlerts(roadId);
 }
 
 // Show segment selection popup
@@ -1494,4 +1529,104 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+
+// Fetch recent alerts for a road
+// Fetch recent alerts for a road
+async function fetchRecentAlerts(roadId) {
+    try {
+        const response = await fetch(`${API_URL}/road-alerts/${roadId}`);
+        const result = await response.json();
+
+        const container = document.getElementById('popup-alerts-container');
+        if (!container) return;
+
+        if (result.success && result.data && result.data.length > 0) {
+            let alertsHtml = `<div class="recent-alerts"><h4>Recent Alerts</h4>`;
+
+            result.data.forEach(alert => {
+                const date = new Date(alert.timestamp);
+                const timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                alertsHtml += `
+                    <div class="alert-item">
+                        <div class="alert-header">
+                            <span>${capitalize(alert.alertType.replace('_', ' '))}</span>
+                            <span class="alert-time">${timeStr}</span>
+                        </div>
+                        <div>${alert.description}</div>
+                    </div>
+                `;
+            });
+
+            alertsHtml += `</div>`;
+            container.innerHTML = alertsHtml;
+        } else {
+            container.innerHTML = ''; // No alerts to show
+        }
+    } catch (error) {
+        console.error('Failed to load alerts:', error);
+        const container = document.getElementById('popup-alerts-container');
+        if (container) container.innerHTML = '<div style="font-size:12px; color:#ffcccc;">Failed to load alerts</div>';
+    }
+}
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// Alert Modal Functions
+let currentAlertRoadId = null;
+
+function openRoadAlertModal(roadId) {
+    currentAlertRoadId = roadId;
+    document.getElementById('alert-modal').style.display = 'flex';
+}
+
+function closeAlertModal() {
+    document.getElementById('alert-modal').style.display = 'none';
+    document.getElementById('alert-description').value = '';
+    currentAlertRoadId = null;
+}
+
+async function submitAlert() {
+    if (!currentAlertRoadId) return;
+
+    const alertTypeInput = document.querySelector('input[name="alertType"]:checked');
+    const alertType = alertTypeInput ? alertTypeInput.value : 'other';
+    const description = document.getElementById('alert-description').value;
+
+    if (!description.trim()) {
+        alert('Please provide a description');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/road-alerts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                roadId: currentAlertRoadId,
+                alertType,
+                description
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert('Alert reported successfully. Thank you for helping keep the community safe!');
+            closeAlertModal();
+            // Refresh the popup if it's still open for the same road
+            fetchRecentAlerts(currentAlertRoadId);
+        } else {
+            alert('Failed to report alert: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error reporting alert:', error);
+        alert('An error occurred while reporting the alert.');
+    }
+}
 

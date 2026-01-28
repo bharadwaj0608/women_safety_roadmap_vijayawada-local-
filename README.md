@@ -1,80 +1,80 @@
-<<<<<<< HEAD
-# Full-Stack Web App
+# SafeHerRoute 🛡️
 
-A simple full-stack web application built with Node.js, Express, MongoDB, and vanilla HTML/CSS/JavaScript.
+**SafeHerRoute** is a web-based safety mapping application designed to empower women with real-time road safety information. It focuses on providing safety ratings, community-driven alerts, and safe navigation options for roads in Vijayawada.
 
-## Features
+## 🌟 Features
 
-- RESTful API with Express
-- MongoDB database integration with Mongoose
-- Create and view items
-- Modern, responsive UI with gradient design
-- CORS enabled for API access
+*   **Interactive Safety Map**: Visualizes roads with safety ratings (Green: Very Safe, Orange: Moderate, Red: Unsafe).
+*   **📍 Live Geolocation**: Instantly center the map on your customized location to find safe routes nearby.
+*   **⚠️ Community Alerts**:
+    *   **Report Issues**: Users can report hazards like poor lighting, harassment, or accidents.
+    *   **Real-time Updates**: View recent alerts reported by others directly on the map popup.
+*   **🗺️ Navigation**: Integrated "Get Directions" button to easily navigate to safe roads using Google Maps.
+*   **Detailed Road Insights**: View ratings for day vs. night, street light availability, and population density.
+
+## 🛠️ Technologies Used
+
+-   **Frontend**: HTML5, CSS3 (Custom Gradient UI), JavaScript (ES6+), MapLibre GL JS (for maps).
+-   **Backend**: Node.js, Express.js.
+-   **Database**: MongoDB (Mongoose) for storing ratings and alerts.
+-   **API**: RESTful API for fetching road data, ratings, and alerts.
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+-   Node.js (v14 or higher)
+-   MongoDB (running locally or a compiled connection string)
+
+### Installation
+
+1.  **Clone the repository** (if applicable) or download the source code.
+
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+3.  **Configure Environment**:
+    -   Ensure you have a `.env` file or valid environment variables set up for `MONGODB_URI`.
+    -   Default fallback: `mongodb://localhost:27017/fullstack-app` (check `server.js`).
+
+4.  **Run the Application**:
+    ```bash
+    npm run dev
+    ```
+    or
+    ```bash
+    node server.js
+    ```
+
+5.  **Access the App**:
+    -   Open your browser and navigate to: `http://localhost:3000`
+
+## 📱 How to Use
+
+1.  **Explore**: Drag and zoom around the map to see road colors indicating safety levels.
+2.  **Select a Road**: Click on any road segment to open the **Safety Popup**.
+3.  **Check Alerts**: Read "Recent Alerts" in the popup to stay informed.
+4.  **Action**:
+    -   Click **⚠️ Report Alert** to warn others about a safety issue.
+    -   Click **⭐ Rate this Road** to contribute your own safety experience.
+    -   Click **🗺️ Get Directions** to navigate to that location via Google Maps.
 
 ## Project Structure
 
 ```
-├── server.js           # Express server and MongoDB connection
-├── package.json        # Project dependencies
-├── .env               # Environment variables
+├── server.js           # Express server & MongoDB setup
 ├── models/
-│   └── Item.js        # Mongoose model for items
+│   ├── RoadRating.js   # Schema for road safety ratings
+│   └── RoadAlert.js    # Schema for user-reported alerts
 ├── routes/
-│   └── api.js         # API routes
+│   └── api.js          # API endpoints for ratings & alerts
 └── public/
-    ├── index.html     # Frontend HTML
-    ├── style.css      # Styling
-    └── app.js         # Frontend JavaScript
+    ├── index.html      # Main UI
+    ├── style.css       # Custom styling & animations
+    └── app.js          # Map logic & frontend functionality
 ```
 
-## Prerequisites
-
-- Node.js (v14 or higher)
-- MongoDB (running locally or MongoDB Atlas connection string)
-
-## Installation
-
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Configure environment variables:
-   - Update `.env` file with your MongoDB connection string if needed
-   - Default: `mongodb://localhost:27017/fullstack-app`
-
-3. Make sure MongoDB is running locally, or update the connection string in `.env`
-
-## Running the Application
-
-Start the server:
-```bash
-npm start
-```
-
-The application will be available at:
-- Frontend: http://localhost:3000
-- API: http://localhost:3000/api
-
-## API Endpoints
-
-- `GET /api/health` - Health check
-- `GET /api/items` - Get all items
-- `POST /api/items` - Create a new item
-  - Body: `{ "name": "Item name", "description": "Item description" }`
-
-## Technologies Used
-
-- **Backend**: Node.js, Express.js, Mongoose
-- **Database**: MongoDB
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Middleware**: CORS, body-parser
-
-## Notes
-
-- The server will start even if MongoDB is not connected, but database operations will fail
-- Make sure MongoDB is running before testing database functionality
-- For production, update the MongoDB connection string and add proper error handling
-=======
-# women_safetyroadmap_vijayawada
->>>>>>> 207129ffb4d03328cdbd2f9aa8373e5da184f0e2
+---
+*SafeHerRoute - Navigating Safety Together.*

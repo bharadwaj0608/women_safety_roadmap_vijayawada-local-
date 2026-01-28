@@ -4,16 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Road Safety Review Map</title>
+  <title>SafeHerRoute</title>
   <!-- MapLibre GL JS CSS -->
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <!-- Title Overlay -->
+  <div id="title-overlay" class="title-overlay">SafeHerRoute</div>
+
   <!-- Full-screen Map -->
   <div id="map"></div>
-  
+
   <!-- Color Legend Box -->
   <div id="legend-box" class="legend-box">
     <div class="legend-header">Road Safety Rating</div>
@@ -35,6 +38,92 @@
     </div>
   </div>
 
+  <!-- Review Modal (Placeholder - assuming this exists or will be added) -->
+  <!-- This is a placeholder for the Review Modal, as the instruction implies it exists
+       and the new modal should be placed after it. The content of the Review Modal
+       is not provided in the original document or the instruction's snippet,
+       only its closing tags are implied in the snippet's context. -->
+  <!-- If a full Review Modal is intended, it should be added here.
+       For now, we'll assume the instruction's context means the new modal
+       should be placed before the script tags, after any other modals. -->
+  <!-- Example of what the end of a Review Modal might look like, based on the snippet: -->
+  <!--
+  <div id="review-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Submit a Review</h2>
+        <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-section">
+          <label class="form-label">Rating</label>
+          <div class="star-rating">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+          </div>
+        </div>
+        <div class="form-section">
+          <label class="form-label">Comments</label>
+          <textarea id="review-comments" placeholder="Share your experience..."></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-secondary" onclick="closeReviewModal()">Cancel</button>
+          <button class="btn-primary" onclick="submitReview()">Submit Review</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  -->
+
+  <!-- Report Alert Modal -->
+  <div id="alert-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>⚠️ Report Safety Issue</h2>
+        <button class="modal-close" onclick="closeAlertModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-section">
+          <label class="form-label">Issue Type</label>
+          <div class="checkbox-group">
+            <label class="checkbox-option">
+              <input type="radio" name="alertType" value="harassment">
+              <span>Harassment</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="radio" name="alertType" value="poor_lighting">
+              <span>Poor Lighting</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="radio" name="alertType" value="accident">
+              <span>Accident</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="radio" name="alertType" value="construction">
+              <span>Construction</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="radio" name="alertType" value="other" checked>
+              <span>Other</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Description</label>
+          <textarea id="alert-description" placeholder="Please describe the issue in detail..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-secondary" onclick="closeAlertModal()">Cancel</button>
+          <button class="btn-primary" onclick="submitAlert()">Submit Alert</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- MapLibre GL JS Library -->
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <script src="app.js"></script>
